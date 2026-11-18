@@ -31,6 +31,10 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Ejecuta las pruebas; si alguna falla, el flujo falla
+      - name: Ejecutar pruebas
+        run: python -m pytest tests -v
+
       # Ejecuta la aplicación
       - name: Ejecutar aplicación
-        run: python main.py
+        run: printf "10\n5\n" | python main.py
