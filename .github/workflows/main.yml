@@ -1,0 +1,36 @@
+# Flujo básico de integración continua para la aplicación Python
+name: CI Python
+
+# Se ejecuta en cada push y pull request hacia main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Permite ejecutarlo manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Descarga el código del repositorio
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      # Configura la versión de Python
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Instala dependencias solo si existe requirements.txt
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Ejecuta la aplicación
+      - name: Ejecutar aplicación
+        run: python main.py
